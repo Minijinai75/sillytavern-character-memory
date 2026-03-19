@@ -3,7 +3,7 @@
     "loading_order": 100,
     "requires": [],
     "optional": [],
-    "js": ["i18n-zh-TW.js", "auto-translate.js", "index.js"],
+    "js": ["i18n-zh-TW.js", "auto-translate.js", "enhanced-translate.js", "index.js"],
     "css": "style.css",
     "author": "bal-spec (zh-TW translation)",
     "version": "2.1.9-zh-TW",
