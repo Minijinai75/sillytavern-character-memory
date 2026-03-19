@@ -189,6 +189,63 @@ const CharMemory_i18n_zhTW = {
         noExtensionPrompts: '沒有啟動的擴充提示',
     },
 
+    // 診斷檢查項目
+    diagnosticChecks: {
+        filesEnabled: '檔案已啟用',
+        filesEnabledDetail: '向量儲存中的「為檔案啟用」已開啟',
+        filesNotEnabled: '檔案未啟用',
+        filesNotEnabledDetail: '請開啟 Extensions → Vector Storage → File vectorization settings → Enable for files',
+
+        memoryFile: '資料庫中的記憶檔案',
+        memoryFileFound: (fileName) => `已找到：${fileName}`,
+        memoryFileNotFound: '未找到記憶檔案。請先執行提取。',
+
+        fileVectorized: '檔案已向量化',
+        fileVectorizedDetail: (chunks) => `已建立索引：${chunks} 個區塊`,
+        fileNotVectorized: '檔案尚未向量化。生成一則訊息以觸發索引。',
+
+        chunkOverlap: '區塊重疊',
+        chunkOverlapZero: (recommended) => `重疊為 0%。跨區塊邊界的記憶區塊可能會被分割。建議：10-25%（目前區塊大小約 ${recommended} 個字元）。`,
+        chunkOverlapGood: (pct, chars) => `${pct}%（約 ${chars} 個字元）— 有助於防止記憶區塊被分割。`,
+
+        chunkSize: '區塊大小',
+        chunkSizeTooSmall: (size, avg) => `區塊大小（${size} 個字元）小於平均記憶區塊（${avg} 個字元）。這可能會在內容中間分割區塊。建議：CharMemory 使用 800-1000 個字元。`,
+        chunkSizeTooLarge: (size, avg) => `區塊大小（${size} 個字元）遠大於平均記憶區塊（${avg} 個字元）。多個區塊可能被打包到單個區塊中，降低檢索精確度。建議：CharMemory 使用 800-1000 個字元。`,
+        chunkSizeGood: (size, avg) => `區塊大小（${size}）適合平均記憶區塊大小（${avg} 個字元）。`,
+
+        retrieveChunks: '檢索區塊數過高',
+        retrieveChunksDetail: (count) => `檢索區塊數設定為 ${count}。對於 CharMemory，建議使用 2-3。較高的值會在每則訊息中注入更多記憶，這可能會用無關內容淹沒提示。`,
+
+        scoreThreshold: '分數閾值',
+        scoreThresholdNotSet: '未設定分數閾值。所有檢索到的記憶都會被注入，包括不相關的記憶。建議：設定為 0.2-0.3。',
+        scoreThresholdTooLow: (threshold) => `分數閾值（${threshold}）可能太低。不相關的記憶可能會通過。建議：0.2-0.3。`,
+        scoreThresholdGood: (threshold) => `分數閾值（${threshold}）— 過濾低相關性匹配。`,
+
+        memoriesInjected: '記憶已注入',
+        memoriesInjectedZero: '上次生成中注入了 0 個記憶。這可能是正常的——沒有記憶的分數高於相關性閾值。如果您預期會注入記憶，請嘗試降低分數閾值。',
+        memoriesInjectedCount: (count) => `上次生成中注入了 ${count} 個記憶項目。`,
+
+        duplicateMemories: '重複記憶',
+        duplicatesFound: (dupes, total, unique) => `發現 ${dupes} 個重複項（總共 ${total} 個，${unique} 個唯一）。這通常意味著區塊邊界正在分割記憶區塊。請增加區塊重疊或區塊大小。`,
+        noDuplicates: (count) => `沒有重複項 — 所有 ${count} 個注入的記憶都是唯一的。`,
+    },
+
+    // 活動日誌動作
+    activityActions: {
+        extracting: '提取中',
+        extracted: '已提取',
+        consolidating: '整合中',
+        consolidated: '已整合',
+        reformatting: '重新格式化中',
+        reformatted: '已重新格式化',
+        saved: '已儲存',
+        deleted: '已刪除',
+        imported: '已匯入',
+        exported: '已匯出',
+        error: '錯誤',
+        warning: '警告',
+    },
+
     // 提供商
     providers: {
         openai: 'OpenAI',
