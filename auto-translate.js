@@ -15,6 +15,37 @@
         'Diagnostic Report': '診斷報告',
         'Reset / Clear': '重設 / 清除',
 
+        // 分頁內部按鈕和標題
+        'Reset': '重設',
+        'Reset This Chat': '重設此對話',
+        'Reset Batch Progress': '重設批次進度',
+        'Clear All Memories': '清除所有記憶',
+        'View file contents': '檢視檔案內容',
+        'Download file': '下載檔案',
+        'Delete file': '刪除檔案',
+        'Convert file format': '轉換檔案格式',
+        'Import file': '匯入檔案',
+        'Export memories': '匯出記憶',
+
+        // 分頁內部說明文字
+        'Resets the extraction pointer for the active chat': '重設當前對話的提取指標',
+        'Next "Extract Now" will re-read all messages in this chat from the first': '下次「立即提取」將從第一則訊息重新讀取此對話的所有訊息',
+        'Group chat:': '群組聊天：',
+        'all members share one extraction pointer': '所有成員共享一個提取指標',
+        'so this resets all of them at once': '因此這會一次重設所有成員',
+        'The Batch tool remembers the last message': '批次工具會記住最後一則訊息',
+        'it processed in each chat file': '在每個聊天檔案中處理的',
+        'so future runs only extract new messages': '因此未來的執行只會提取新訊息',
+        'Reset this to make Batch treat all': '重設此項目以使批次工具將所有',
+        'chats as unprocessed': '對話視為未處理',
+        'for example, after changing the extraction prompt': '例如，在變更提取提示後',
+        'Does not affect Extract Now or auto-extraction': '不影響立即提取或自動提取',
+        'Deletes this character\'s memory file': '刪除此角色的記憶檔案',
+        'contains memories from all their chats': '包含來自所有對話的記憶',
+        'and resets extraction tracking': '並重設提取追蹤',
+        'Cannot be undone': '無法復原',
+        'Delete this character\'s memory file and reset extraction tracking — cannot be undone': '刪除此角色的記憶檔案並重設提取追蹤 — 無法復原',
+
         // 檢查項目標籤
         'Vector Storage for files': '檔案的向量儲存',
         'Files enabled': '檔案已啟用',

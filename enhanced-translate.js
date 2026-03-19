@@ -24,10 +24,25 @@
 
         // 翻譯對照表 - 與主腳本同步
         const TRANSLATIONS = {
+            // 分頁標籤
             'Health Checks': '健康檢查',
             'Data Bank': '資料庫',
             'Diagnostic Report': '診斷報告',
             'Reset / Clear': '重設 / 清除',
+
+            // 分頁內部按鈕
+            'Reset': '重設',
+            'Reset This Chat': '重設此對話',
+            'Reset Batch Progress': '重設批次進度',
+            'Clear All Memories': '清除所有記憶',
+            'View file contents': '檢視檔案內容',
+            'Download file': '下載檔案',
+            'Delete file': '刪除檔案',
+            'Convert file format': '轉換檔案格式',
+            'Import file': '匯入檔案',
+            'Export memories': '匯出記憶',
+
+            // 健康檢查
             'Warnings detected': '偵測到警告',
             'Files enabled': '檔案已啟用',
             'Memory file in Data Bank': '資料庫中的記憶檔案',
@@ -40,6 +55,11 @@
             'Duplicate memories': '重複記憶',
             'Vector Storage for files': '檔案的向量儲存',
             'File vectorization': '檔案向量化',
+
+            // 按鈕 title 屬性
+            'Delete this character\'s memory file and reset extraction tracking — cannot be undone': '刪除此角色的記憶檔案並重設提取追蹤 — 無法復原',
+            'Resets the extraction pointer for the active chat — next \'Extract Now\' re-reads from the first message': '重設當前對話的提取指標 — 下次「立即提取」會從第一則訊息重新讀取',
+            'Clears batch extraction records for all of this character\'s chats': '清除此角色所有對話的批次提取記錄',
         };
 
         /**
@@ -47,11 +67,17 @@
          */
         function forceTranslateSelectors() {
             // 翻譯所有按鈕
-            const buttons = document.querySelectorAll('button, .charMemory_modalNavItem, [data-section]');
+            const buttons = document.querySelectorAll('button, .charMemory_modalNavItem, [data-section], input[type="button"]');
             buttons.forEach(button => {
                 const text = button.textContent?.trim();
                 if (text && TRANSLATIONS[text]) {
                     button.textContent = TRANSLATIONS[text];
+                }
+
+                // 翻譯 title 屬性
+                const title = button.getAttribute('title');
+                if (title && TRANSLATIONS[title]) {
+                    button.setAttribute('title', TRANSLATIONS[title]);
                 }
             });
 
@@ -64,9 +90,49 @@
                 }
             });
 
+            // 翻譯標題元素
+            const headings = document.querySelectorAll('h4.charMemory_modalSectionTitle, h3, h4, h5');
+            headings.forEach(heading => {
+                const text = heading.textContent?.trim();
+                if (text && TRANSLATIONS[text]) {
+                    heading.textContent = TRANSLATIONS[text];
+                }
+            });
+
+            // 翻譯說明文字
+            const helperTexts = document.querySelectorAll('.charMemory_helperText, small');
+            helperTexts.forEach(helper => {
+                let text = helper.textContent?.trim();
+                if (text) {
+                    // 部分匹配翻譯
+                    for (const [en, zh] of Object.entries(TRANSLATIONS)) {
+                        if (text.includes(en)) {
+                            text = text.replace(new RegExp(en, 'g'), zh);
+                        }
+                    }
+                    if (text !== helper.textContent?.trim()) {
+                        helper.textContent = text;
+                    }
+                }
+            });
+
             // 翻譯所有包含特定文字的元素
             const allElements = document.querySelectorAll('*');
             allElements.forEach(el => {
+                // 翻譯 title 屬性
+                const title = el.getAttribute('title');
+                if (title) {
+                    let newTitle = title;
+                    for (const [en, zh] of Object.entries(TRANSLATIONS)) {
+                        if (newTitle.includes(en)) {
+                            newTitle = newTitle.replace(new RegExp(en, 'g'), zh);
+                        }
+                    }
+                    if (newTitle !== title) {
+                        el.setAttribute('title', newTitle);
+                    }
+                }
+
                 // 只翻譯直接包含文字的元素（不遞迴到子元素）
                 if (el.childNodes.length === 1 && el.childNodes[0].nodeType === Node.TEXT_NODE) {
                     const text = el.textContent?.trim();
