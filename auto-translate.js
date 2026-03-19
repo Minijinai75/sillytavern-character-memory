@@ -144,13 +144,17 @@
      * 翻譯文字節點
      */
     function translateTextNode(node) {
-        let text = node.textContent;
+        if (!node || !node.textContent) return;
+
+        let text = node.textContent.trim();
+        if (!text) return;
+
         let translated = false;
 
         // 嘗試完全匹配
         for (const [en, zh] of Object.entries({...DIAGNOSTIC_TRANSLATIONS, ...ACTIVITY_TRANSLATIONS, ...HEALTH_STATUS_TRANSLATIONS})) {
-            if (text.trim() === en) {
-                node.textContent = zh;
+            if (text === en) {
+                node.textContent = node.textContent.replace(en, zh);
                 translated = true;
                 break;
             }
@@ -158,11 +162,21 @@
 
         // 如果沒有完全匹配，嘗試部分替換
         if (!translated) {
-            let newText = text;
-            for (const [en, zh] of Object.entries({...DIAGNOSTIC_TRANSLATIONS, ...ACTIVITY_TRANSLATIONS})) {
-                newText = newText.replace(new RegExp(en, 'gi'), zh);
+            let newText = node.textContent;
+            let hasChange = false;
+
+            // 按長度排序，優先替換較長的字串
+            const entries = Object.entries({...DIAGNOSTIC_TRANSLATIONS, ...ACTIVITY_TRANSLATIONS})
+                .sort((a, b) => b[0].length - a[0].length);
+
+            for (const [en, zh] of entries) {
+                if (newText.includes(en)) {
+                    newText = newText.replace(new RegExp(en, 'g'), zh);
+                    hasChange = true;
+                }
             }
-            if (newText !== text) {
+
+            if (hasChange && newText !== node.textContent) {
                 node.textContent = newText;
             }
         }
@@ -174,11 +188,33 @@
     function translateElement(element) {
         if (!element) return;
 
+        // 先翻譯按鈕元素的直接文字內容（不遞迴）
+        if (element.tagName === 'BUTTON' || element.classList?.contains('charMemory_modalNavItem')) {
+            const text = element.textContent?.trim();
+            if (text && DIAGNOSTIC_TRANSLATIONS[text]) {
+                element.textContent = DIAGNOSTIC_TRANSLATIONS[text];
+                return; // 已翻譯，不需要繼續
+            }
+        }
+
         // 遍歷所有文字節點
         const walker = document.createTreeWalker(
             element,
             NodeFilter.SHOW_TEXT,
-            null,
+            {
+                acceptNode: function(node) {
+                    // 跳過 script 和 style 標籤
+                    const parent = node.parentElement;
+                    if (parent && (parent.tagName === 'SCRIPT' || parent.tagName === 'STYLE')) {
+                        return NodeFilter.FILTER_REJECT;
+                    }
+                    // 只處理有內容的文字節點
+                    if (node.textContent && node.textContent.trim()) {
+                        return NodeFilter.FILTER_ACCEPT;
+                    }
+                    return NodeFilter.FILTER_SKIP;
+                }
+            },
             false
         );
 
